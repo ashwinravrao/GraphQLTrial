@@ -1,6 +1,6 @@
-# GraphQLTrial
+# GraphQLTrial / Volley
 
-Test app that makes GraphQL requests against the GitHub v4 API using Apollo-Android, a popular GraphQL-compliant networking client.
+Test app that makes GraphQL requests against the GitHub v4 API using Volley, a first-party networking library from Google.
 
 ## Languages, libraries and tools used
 
@@ -9,7 +9,7 @@ Test app that makes GraphQL requests against the GitHub v4 API using Apollo-Andr
  - [Koin](https://insert-koin.io/)
  - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
  - [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)
- - [Apollo Android](https://github.com/apollographql/apollo-android)
+ - [Volley](https://developer.android.com/training/volley)
 
 ## Minimum Requirements
 
