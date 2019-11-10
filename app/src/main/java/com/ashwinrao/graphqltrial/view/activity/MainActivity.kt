@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.ashwinrao.graphqltrial.BuildConfig
 import com.ashwinrao.graphqltrial.R
 import com.ashwinrao.graphqltrial.baseUrl
@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         listenToSearchField(binding.searchField)
     }
 
@@ -46,22 +47,38 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun buildQuery(param: String): String =
+        "query {\n" +
+                "  search(first: 50, query: \"$param\", type: USER) {\n" +
+                "    nodes {\n" +
+                "      ... on User {\n" +
+                "        name,\n" +
+                "        bio\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "}"
+
     private fun searchUsers(query: String) {
-        val jsonObjectRequest =
-            object : JsonObjectRequest(Method.POST, baseUrl, null, Response.Listener {
-                Log.d(tag, it.toString())
-            }, Response.ErrorListener {
-                Log.e(tag, it.message ?: "Error communicating with GitHub\'s servers")
-                Toast.makeText(this@MainActivity, "Oops. Try again later", Toast.LENGTH_SHORT)
-                    .show()
-            }) {
+        val stringRequest =
+            object : StringRequest(
+                Method.POST,
+                baseUrl + "?query=" + "{\"query\": ${buildQuery(query)}}",
+                Response.Listener<String> {
+                    Log.d(tag, it)
+                },
+                Response.ErrorListener {
+                    Log.e(tag, it.message ?: "Error parsing response object")
+                    Toast.makeText(this@MainActivity, "Oops. Try again later", Toast.LENGTH_SHORT)
+                        .show()
+                }) {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>()
                     headers["Authorization"] = "bearer ${BuildConfig.GITHUB_OAUTH_TOKEN}"
                     return headers
+                }
             }
-        }
-        requestQueue.add(jsonObjectRequest)
+        requestQueue.add(stringRequest)
     }
 
 //    private fun showFragment(fragment: Fragment) {
