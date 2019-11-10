@@ -1,4 +1,4 @@
-# GraphQLTrial
+# GraphQLTrial / Volley
 
 Test app that makes GraphQL requests against the GitHub v4 API using Volley, a first-party networking library from Google.
 
