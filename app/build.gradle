@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
 
-apply plugin: 'com.apollographql.android'
-
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android'
@@ -51,10 +49,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // Apollo Client
-    implementation "com.apollographql.apollo:apollo-android-support:$apollo_version"
-    implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
-    implementation "com.apollographql.apollo:apollo-coroutines-support:$apollo_version"
+    // Volley
+    implementation 'com.android.volley:volley:1.1.1'
 
     // Koin DI/SL
     implementation 'org.koin:koin-android:2.0.1'
