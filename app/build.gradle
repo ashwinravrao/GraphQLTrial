@@ -31,9 +31,13 @@ android {
         enabled = true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    useLibrary  'org.apache.http.legacy'
 }
 
 dependencies {
@@ -51,6 +55,9 @@ dependencies {
 
     // Volley
     implementation 'com.android.volley:volley:1.1.1'
+
+    // OkHttp3
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
 
     // Koin DI/SL
     implementation 'org.koin:koin-android:2.0.1'

@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="User"
-            type="com.apollographql.apollo.graphqltrial.fragment.UserFragment" />
+            name="user"
+            type="com.ashwinrao.graphqltrial.network.User" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -27,7 +27,7 @@
             android:layout_gravity="center_vertical">
 
             <TextView
-                android:text="@{User.name()}"
+                android:text="@{user.name}"
                 tools:text="John Doe"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="@android:color/black"
@@ -37,7 +37,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{User.bio()}"
+                android:text="@{user.bio}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:textColor="@color/colorSubtitle"
                 android:layout_marginTop="8dp"

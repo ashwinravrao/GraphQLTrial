@@ -1,26 +1,30 @@
 package com.ashwinrao.graphqltrial.view.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import com.apollographql.apollo.graphqltrial.fragment.UserFragment
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.ashwinrao.graphqltrial.BuildConfig
 import com.ashwinrao.graphqltrial.R
+import com.ashwinrao.graphqltrial.baseUrl
 import com.ashwinrao.graphqltrial.databinding.ActivityMainBinding
 import com.ashwinrao.graphqltrial.util.KeyboardUtil
-import com.ashwinrao.graphqltrial.view.fragment.ListFragment
-import com.ashwinrao.graphqltrial.view.fragment.PlaceholderFragment
 import com.ashwinrao.graphqltrial.viewmodel.MainViewModel
-import kotlinx.coroutines.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+private const val tag = "GraphQLTrial"
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var job: Job
-    private var jobCancelled: Boolean = false
+    private val requestQueue: RequestQueue by inject()
     private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,33 +47,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchUsers(query: String) {
-        job = CoroutineScope(Dispatchers.IO).launch {
-            val users: List<UserFragment?>? = viewModel.fetchMatchingUsers(query)
-            withContext(Dispatchers.Main) {
-                showFragment(
-                    if (users.isNullOrEmpty()) PlaceholderFragment()
-                    else ListFragment()
-                )
+        val jsonObjectRequest =
+            object : JsonObjectRequest(Method.POST, baseUrl, null, Response.Listener {
+                Log.d(tag, it.toString())
+            }, Response.ErrorListener {
+                Log.e(tag, it.message ?: "Error communicating with GitHub\'s servers")
+                Toast.makeText(this@MainActivity, "Oops. Try again later", Toast.LENGTH_SHORT)
+                    .show()
+            }) {
+                override fun getHeaders(): MutableMap<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Authorization"] = "bearer ${BuildConfig.GITHUB_OAUTH_TOKEN}"
+                    return headers
             }
         }
+        requestQueue.add(jsonObjectRequest)
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (jobCancelled) job.start()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        job.cancel()
-        jobCancelled = true
-    }
-
-    private fun showFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
-    }
+//    private fun showFragment(fragment: Fragment) {
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.fragment_container, fragment)
+//            .commit()
+//    }
 
 }
