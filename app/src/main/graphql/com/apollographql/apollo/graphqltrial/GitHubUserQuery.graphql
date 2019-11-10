@@ -1,0 +1,14 @@
+query User (
+    $searchResultsCount: Int!
+    $username: String!) {
+    search(first: $searchResultsCount, query: $username, type: USER) {
+        nodes {
+            ...UserFragment
+        }
+    }
+}
+
+fragment UserFragment on User {
+    name
+    bio
+}

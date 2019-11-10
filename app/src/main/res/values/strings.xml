@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GraphQLTrial</string>
+    <string name="placeholder_text">No data. Try again later.</string>
+    <string name="search_field_hint">Search users</string>
+</resources>
