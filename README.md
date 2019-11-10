@@ -1,6 +1,6 @@
 # GraphQLTrial
 
-Test app that makes GraphQL requests against the GitHub v4 API using an Apollo client instance.
+Test app that makes GraphQL requests against the GitHub v4 API using Apollo-Android, a popular GraphQL-compliant networking client.
 
 ## Languages, libraries and tools used
 
