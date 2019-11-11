@@ -50,12 +50,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun buildQuery(param: String): String =
-        "{\"query\":\"query { search(first: 50, query: \"$param\", type: USER) { nodes { ... on User { name, bio } } } }\"}"
+        "\"{\"query\": \"query { search(first: 50, query: \"$param\", type: USER) { nodes { ... on User { name, bio } } } }\"}\""
 
     private fun searchUsers(query: String) {
         val stringRequest =
             object : StringRequest(
-                Method.POST, baseUrl,
+                Method.POST, baseUrl + "?query=" + buildQuery(query),
                 Response.Listener<String> {
                     val json = JSONObject(it)
                     Log.d(tag, json["errors"].toString())
@@ -69,12 +69,6 @@ class MainActivity : AppCompatActivity() {
                     val headers = HashMap<String, String>()
                     headers["Authorization"] = "bearer ${BuildConfig.GITHUB_OAUTH_TOKEN}"
                     return headers
-                }
-
-                override fun getParams(): MutableMap<String, String> {
-                    val params = HashMap<String, String>()
-                    params["query"] = buildQuery(query)
-                    return HashMap()
                 }
             }
         requestQueue.add(stringRequest)
