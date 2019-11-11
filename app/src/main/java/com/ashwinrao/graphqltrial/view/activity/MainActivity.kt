@@ -17,8 +17,10 @@ import com.ashwinrao.graphqltrial.baseUrl
 import com.ashwinrao.graphqltrial.databinding.ActivityMainBinding
 import com.ashwinrao.graphqltrial.util.KeyboardUtil
 import com.ashwinrao.graphqltrial.viewmodel.MainViewModel
+import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 private const val tag = "GraphQLTrial"
 
@@ -48,24 +50,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun buildQuery(param: String): String =
-        "query {\n" +
-                "  search(first: 50, query: \"$param\", type: USER) {\n" +
-                "    nodes {\n" +
-                "      ... on User {\n" +
-                "        name,\n" +
-                "        bio\n" +
-                "      }\n" +
-                "    }\n" +
-                "  }\n" +
-                "}"
+        "{\"query\":\"query { search(first: 50, query: \"$param\", type: USER) { nodes { ... on User { name, bio } } } }\"}"
 
     private fun searchUsers(query: String) {
         val stringRequest =
             object : StringRequest(
-                Method.POST,
-                baseUrl + "?query=" + "{\"query\": ${buildQuery(query)}}",
+                Method.POST, baseUrl,
                 Response.Listener<String> {
-                    Log.d(tag, it)
+                    val json = JSONObject(it)
+                    Log.d(tag, json["errors"].toString())
                 },
                 Response.ErrorListener {
                     Log.e(tag, it.message ?: "Error parsing response object")
@@ -76,6 +69,12 @@ class MainActivity : AppCompatActivity() {
                     val headers = HashMap<String, String>()
                     headers["Authorization"] = "bearer ${BuildConfig.GITHUB_OAUTH_TOKEN}"
                     return headers
+                }
+
+                override fun getParams(): MutableMap<String, String> {
+                    val params = HashMap<String, String>()
+                    params["query"] = buildQuery(query)
+                    return HashMap()
                 }
             }
         requestQueue.add(stringRequest)
