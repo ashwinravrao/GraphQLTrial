@@ -1,6 +1,8 @@
 # GraphQLTrial / Volley
 
-Test app that makes GraphQL requests against the GitHub v4 API using Volley, a first-party networking library from Google.
+Demo app that searches for users against the GitHub v4 GraphQL API using Volley, a first-party networking library from Google.
+
+![](https://github.com/ashwinravrao/GraphQLTrial/blob/volley/screenshots/graphql_trial_volley_demo.gif)
 
 ## Languages, libraries and tools used
 
