@@ -1,6 +1,8 @@
 # GraphQLTrial
 
-Test app that makes GraphQL requests against the GitHub v4 API using Apollo-Android, a popular GraphQL-compliant networking client.
+Demo app that searches for users against the GitHub v4 GraphQL API using Apollo-Android, a popular GraphQL-compliant networking client.
+
+![](https://github.com/ashwinravrao/GraphQLTrial/blob/volley/screenshots/graphql_trial_volley_demo.gif)
 
 ## Languages, libraries and tools used
 
@@ -17,4 +19,4 @@ Test app that makes GraphQL requests against the GitHub v4 API using Apollo-Andr
  - Android 6.0 Marshmallow (API 23)
  - Android SDK and Gradle build tools (latest version)
 
-Updated 11/10/19
+Updated 11/12/19
