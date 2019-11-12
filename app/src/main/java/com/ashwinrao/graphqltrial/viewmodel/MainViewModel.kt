@@ -8,9 +8,6 @@ import com.android.volley.VolleyError
 import com.ashwinrao.graphqltrial.network.User
 import com.ashwinrao.graphqltrial.repository.RepositoryImpl
 import com.ashwinrao.graphqltrial.util.ResponseCallback
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -24,13 +21,11 @@ class MainViewModel(private val repository: RepositoryImpl) : ViewModel(), Respo
         get() = _usersResponseObject
 
     fun fetchUsersMatching(param: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.fetchUsersMatching(param, this@MainViewModel)
-        }
+        repository.fetchUsersMatching(param, this@MainViewModel)
     }
 
     fun cancelRequest() {
-        CoroutineScope(Dispatchers.IO).launch { repository.cancelRequest() }
+        repository.cancelRequest()
     }
 
     private fun parseJsonResponse(response: JSONObject) {

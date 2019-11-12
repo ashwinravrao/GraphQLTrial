@@ -6,9 +6,6 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.ashwinrao.graphqltrial.BuildConfig
 import com.ashwinrao.graphqltrial.baseUrl
 import com.ashwinrao.graphqltrial.util.ResponseCallback
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 private const val requestTag = "fetch matching users"
@@ -23,15 +20,15 @@ class DataSourceImpl(private val requestQueue: RequestQueue) : DataSource {
                     "\"variables\":{\"name\":\"$param\"}}"
         )
 
-    override suspend fun fetchUsersMatching(param: String, callback: ResponseCallback) {
+    override fun fetchUsersMatching(param: String, callback: ResponseCallback) {
         val jsonObjectRequest =
             object : JsonObjectRequest(
                 Method.POST, "$baseUrl?query=", buildUsersQuery(param),
                 Response.Listener {
-                    CoroutineScope(Dispatchers.Main).launch { callback.onSuccess(it) }
+                    callback.onSuccess(it)
                 },
                 Response.ErrorListener {
-                    CoroutineScope(Dispatchers.Main).launch { callback.onError(it) }
+                    callback.onError(it)
                 }) {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = HashMap<String, String>()
@@ -44,7 +41,7 @@ class DataSourceImpl(private val requestQueue: RequestQueue) : DataSource {
         requestQueue.add(jsonObjectRequest)
     }
 
-    override suspend fun cancelRequest() {
+    override fun cancelRequest() {
         requestQueue.cancelAll(requestTag)
     }
 
