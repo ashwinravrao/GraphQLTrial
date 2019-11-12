@@ -37,7 +37,7 @@ class ListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        adapter.submitList(viewModel.users)
+//        adapter.submitList(viewModel.users)
     }
 
     private fun initializeRecyclerView(rv: RecyclerView) {
