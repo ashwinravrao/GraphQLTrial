@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ashwinrao.graphqltrial.R
@@ -35,17 +36,16 @@ class ListFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-//        adapter.submitList(viewModel.users)
-    }
-
     private fun initializeRecyclerView(rv: RecyclerView) {
         adapter = UserAdapter(requireContext())
         rv.setHasFixedSize(true)
+        adapter.setHasStableIds(true)
         ItemDecoration.addItemDecoration(requireContext(), rv, 1, 16f)
         rv.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         rv.adapter = adapter
+        viewModel.usersResponseObject.observe(requireActivity(), Observer {
+            adapter.submitList(it)
+        })
     }
 
 }

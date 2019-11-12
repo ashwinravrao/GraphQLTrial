@@ -31,6 +31,7 @@ class UserAdapter(private val context: Context) :
     inner class UserViewHolder(val binding: ViewholderUserBinding) :
         RecyclerView.ViewHolder(binding.root)
 
+    override fun getItemId(position: Int): Long = getItem(position).id
 }
 
 class UserDiffUtil : DiffUtil.ItemCallback<User>() {

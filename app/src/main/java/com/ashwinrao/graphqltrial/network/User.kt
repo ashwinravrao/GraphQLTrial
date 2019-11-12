@@ -1,5 +1,7 @@
 package com.ashwinrao.graphqltrial.network
 
-import java.util.*
+import kotlin.random.Random
 
-data class User(val id: String = UUID.randomUUID().toString(), val name: String, val bio: String)
+data class User(val name: String, val bio: String?) {
+    val id: Long = Random.nextLong()
+}
